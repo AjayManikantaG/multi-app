@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { CustomTable } from '../../../../../libs/ui/src/lib/molecules/table/CustomTable';
+import { CustomTable } from '@multi-app/ui';
 
 const PageContainer = styled.div`
   padding: 24px;

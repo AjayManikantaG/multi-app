@@ -32,7 +32,7 @@ export const CustomTable: React.FC<CustomTableProps> = ({
             <TitleRow>{col.headerName || col.field}</TitleRow>
             
             {/* Prevent click events from triggering column sorting when interacting with the select element */}
-            <FilterRow onClick={(e) => e.stopPropagation()}>
+            <FilterRow>
               <select
                 value={filters[col.field] || 'ALL'}
                 onChange={(e) => onFilterChange(col.field, e.target.value)}
