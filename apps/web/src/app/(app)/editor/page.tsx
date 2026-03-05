@@ -11,12 +11,12 @@ const PageContainer = styled.div`
   gap: 20px;
 `;
 
-export default function MonitoringPage() {
+export default function EditorPage() {
   return (
     <PageContainer>
-      <Typography variant="h4">Monitoring</Typography>
+      <Typography variant="h4">Editor</Typography>
       <Typography variant="body1">
-        Real-time system health and workflow execution metrics.
+        This is a placeholder for the Source Code Editor.
       </Typography>
       <div
         style={{
@@ -29,7 +29,7 @@ export default function MonitoringPage() {
           borderRadius: '8px',
         }}
       >
-        Dashboard and Charts Placeholder
+        Code Editor Coming Soon
       </div>
     </PageContainer>
   );

@@ -1,11 +1,17 @@
-export { Header } from './layout/header';
-export { Sidebar } from './layout/sidebar';
+// Styles / Theme
+export * from './styles/theme';
+export { GlobalStyles } from './styles/GlobalStyles';
+
+// Layout
+export * from './layout/header';
+export * from './layout/sidebar';
 
 // Atoms
 export * from './components/atoms/Button';
 export * from './components/atoms/TextField';
 export * from './components/atoms/Typography';
 export * from './components/atoms/Checkbox';
+export * from './components/atoms/table/CustomDataGrid';
 
 // Molecules
 export * from './components/molecules/SearchBar';

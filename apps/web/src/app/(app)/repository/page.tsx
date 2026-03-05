@@ -11,12 +11,12 @@ const PageContainer = styled.div`
   gap: 20px;
 `;
 
-export default function MonitoringPage() {
+export default function RepositoryPage() {
   return (
     <PageContainer>
-      <Typography variant="h4">Monitoring</Typography>
+      <Typography variant="h4">Repository</Typography>
       <Typography variant="body1">
-        Real-time system health and workflow execution metrics.
+        Manage your workflows, modules, and assets here.
       </Typography>
       <div
         style={{
@@ -29,7 +29,7 @@ export default function MonitoringPage() {
           borderRadius: '8px',
         }}
       >
-        Dashboard and Charts Placeholder
+        Repository Tree and Version Control Placeholder
       </div>
     </PageContainer>
   );

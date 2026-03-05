@@ -11,12 +11,12 @@ const PageContainer = styled.div`
   gap: 20px;
 `;
 
-export default function MonitoringPage() {
+export default function LoggingPage() {
   return (
     <PageContainer>
-      <Typography variant="h4">Monitoring</Typography>
+      <Typography variant="h4">Log Files</Typography>
       <Typography variant="body1">
-        Real-time system health and workflow execution metrics.
+        Browse and search through system and execution logs.
       </Typography>
       <div
         style={{
@@ -29,7 +29,7 @@ export default function MonitoringPage() {
           borderRadius: '8px',
         }}
       >
-        Dashboard and Charts Placeholder
+        Log Viewer Placeholder
       </div>
     </PageContainer>
   );

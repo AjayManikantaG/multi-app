@@ -1,5 +1,5 @@
 export * from './auth/login-form';
-export * from './workflow/workflow-canvas';
+export * from './workflow';
 export * from './systemlog';
 
 export * from './lib/hooks/useModuleConfig';
