@@ -21,12 +21,13 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@multi-app/ui": [
-        "../../libs/ui/src/index.ts"
-      ]
+      "@/*": ["./src/*"],
+      "@temp-workspace/core": ["../../libs/core/src/index.ts"],
+      "@temp-workspace/ui": ["../../libs/ui/src/index.ts"],
+      "@temp-workspace/shared": ["../../libs/shared/src/index.ts"],
+      "@temp-workspace/entities": ["../../libs/entities/src/index.ts"],
+      "@temp-workspace/infrastructure": ["../../libs/infrastructure/src/index.ts"],
+      "@temp-workspace/features": ["../../libs/features/src/index.ts"]
     },
     "types": [
       "jest",
@@ -41,8 +42,8 @@
     "src/**/*.tsx",
     "src/**/*.js",
     "src/**/*.jsx",
-    "../../libs/ui/src/**/*.ts",
-    "../../libs/ui/src/**/*.tsx",
+    "../../libs/**/*.ts",
+    "../../libs/**/*.tsx",
     "../../apps/web/.next/types/**/*.ts",
     "../../dist/apps/web/.next/types/**/*.ts",
     "next-env.d.ts"

@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
 import {
   DataGrid,
   GridColDef,
@@ -25,155 +24,14 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import CircularProgress from '@mui/material/CircularProgress';
 import Pagination from '@mui/material/Pagination';
 
-// ==========================================
-// Styled Components
-// ==========================================
-
-const PageContainer = styled.div`
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-height: calc(100vh - 64px);
-  background-color: #f8f9fa;
-  font-family:
-    'Inter',
-    -apple-system,
-    sans-serif;
-`;
-
-const HeaderRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 24px;
-  gap: 16px;
-`;
-
-const Title = styled.h1`
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0;
-  color: #1a1a1a;
-`;
-
-const StatusPill = styled.div<{ status: string }>`
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
-  color: white;
-  display: inline-block;
-  min-width: 60px;
-  text-align: center;
-  background-color: ${(props) =>
-    props.status.toLowerCase() === 'ok'
-      ? '#2e7d32'
-      : props.status.toLowerCase() === 'error'
-        ? '#d32f2f'
-        : '#ed6c02'};
-`;
-
-const SearchWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-  gap: 12px;
-`;
-
-const StyledDataGridContainer = styled.div`
-  flex: 1;
-  width: 100%;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e0e0e0;
-  overflow: hidden;
-
-  /* Custom styling for MUI DataGrid */
-  .MuiDataGrid-root {
-    border: none;
-    font-family:
-      'Inter',
-      -apple-system,
-      sans-serif;
-  }
-
-  .MuiDataGrid-columnHeaders {
-    background-color: #fefefe;
-    border-bottom: 2px solid #e0e0e0;
-    color: #4a4a4a;
-    font-weight: 600;
-    font-size: 13px;
-  }
-
-  /* Remove default padding from header cells so custom component can span 100% width */
-  .MuiDataGrid-columnHeader {
-    padding: 0 !important;
-  }
-
-  /* Override the default header title container to fill space */
-  .MuiDataGrid-columnHeaderTitleContainer {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
-    padding: 0 !important;
-  }
-
-  .MuiDataGrid-columnHeaderTitleContainerContent {
-    flex: 1;
-    display: flex;
-    width: 100%;
-  }
-
-  .MuiDataGrid-columnHeaderTitle {
-    font-weight: 600;
-  }
-
-  /* Position Sort and Menu icons correctly on the top 'row' of the header */
-  .MuiDataGrid-iconButtonContainer {
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    z-index: 10;
-  }
-
-  .MuiDataGrid-menuIcon {
-    position: absolute;
-    right: 28px;
-    top: 8px;
-    z-index: 10;
-  }
-
-  /* Remove default outline when focused */
-  .MuiDataGrid-columnHeader:focus,
-  .MuiDataGrid-columnHeader:focus-within {
-    outline: none;
-  }
-
-  .MuiDataGrid-row {
-    cursor: pointer;
-  }
-
-  .MuiDataGrid-row:hover {
-    background-color: #f4f6f8;
-  }
-
-  .MuiDataGrid-cell {
-    border-bottom: 1px solid #f0f0f0;
-    font-size: 13px;
-    color: #333;
-    display: flex;
-    align-items: center;
-  }
-
-  .MuiDataGrid-footerContainer {
-    border-top: 1px solid #e0e0e0;
-    background-color: #fefefe;
-  }
-`;
+import {
+  PageContainer,
+  HeaderRow,
+  Title,
+  StatusPill,
+  SearchWrapper,
+  StyledDataGridContainer,
+} from './system-log.styles';
 
 // ==========================================
 // Data & Mock API
@@ -236,7 +94,26 @@ const DATES = [
   'Feb 25',
 ];
 
-const RAW_ROWS = Array.from({ length: 100 }, (_, i) => ({
+interface SystemLogRow {
+  id: number;
+  globalProcessId: string;
+  processId: string;
+  actionWorkflow: string;
+  tag: string;
+  priority: string;
+  owner: string;
+  node: string;
+  inputModule: string;
+  sourceInputFile: string;
+  outputModule: string;
+  stateOfInputFile: string;
+  start: string;
+  end: string;
+  duration: string;
+  status: string;
+}
+
+const RAW_ROWS: SystemLogRow[] = Array.from({ length: 100 }, (_, i) => ({
   id: i + 1,
   globalProcessId: String(100000 + Math.floor(Math.random() * 900000)),
   processId: i % 5 === 0 ? String(1000 + i) : '-',
@@ -257,10 +134,11 @@ const RAW_ROWS = Array.from({ length: 100 }, (_, i) => ({
 
 /**
  * Pre-calculate all available unique values for each given column field from the raw dataset.
- * This ensures filters know what options exist regardless of the current paginated/filtered data.
  */
 const getUniqueColumnValues = (field: string) => {
-  const vals = new Set(RAW_ROWS.map((r: any) => String(r[field] || '')));
+  const vals = new Set(
+    RAW_ROWS.map((r) => String(r[field as keyof SystemLogRow] || '')),
+  );
   return Array.from(vals).sort();
 };
 
@@ -291,7 +169,7 @@ const fetchMockData = async (params: {
   sortModel: GridSortModel;
   filterModel: Record<string, string[]>;
   globalSearch: string;
-}): Promise<{ records: any[]; total: number }> => {
+}): Promise<{ records: SystemLogRow[]; total: number }> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       let data = [...RAW_ROWS];
@@ -314,7 +192,7 @@ const fetchMockData = async (params: {
         )) {
           if (selectedOptions.length > 0) {
             data = data.filter((row) => {
-              const rowValue = String(row[field as keyof typeof row] || '');
+              const rowValue = String(row[field as keyof SystemLogRow] || '');
               return selectedOptions.includes(rowValue);
             });
           }
@@ -325,8 +203,8 @@ const fetchMockData = async (params: {
       if (params.sortModel && params.sortModel.length > 0) {
         const { field, sort } = params.sortModel[0];
         data = data.sort((a, b) => {
-          const aVal = String(a[field as keyof typeof a] || '');
-          const bVal = String(b[field as keyof typeof b] || '');
+          const aVal = String(a[field as keyof SystemLogRow] || '');
+          const bVal = String(b[field as keyof SystemLogRow] || '');
           if (sort === 'asc') return aVal.localeCompare(bVal);
           return bVal.localeCompare(aVal);
         });
@@ -338,7 +216,7 @@ const fetchMockData = async (params: {
       const paginatedData = data.slice(start, start + params.pageSize);
 
       resolve({ records: paginatedData, total });
-    }, 600); // Simulate network latency
+    }, 600);
   });
 };
 
@@ -373,7 +251,7 @@ function CustomColumnHeader({
       ? activeFilters.filter((v: string) => v !== val)
       : [...activeFilters, val];
 
-    setFilterModel((prev: any) => ({
+    setFilterModel((prev) => ({
       ...prev,
       [field]: newFilters,
     }));
@@ -416,8 +294,7 @@ function CustomColumnHeader({
 
       {/* ROW 2: Filtering Dropdown Area */}
       <div
-        onClick={(e) => {
-          // Stop propagation so clicking the filter doesn't trigger the sort on the column
+        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
           e.stopPropagation();
           e.preventDefault();
           setAnchorEl(e.currentTarget);
@@ -460,11 +337,7 @@ function CustomColumnHeader({
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
-        onClose={(e) => {
-          if (e) {
-            e.stopPropagation();
-            e.preventDefault();
-          }
+        onClose={() => {
           setAnchorEl(null);
         }}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
@@ -542,7 +415,7 @@ function CustomColumnHeader({
 }
 
 // ==========================================
-// Main Page Component
+// Column Definitions
 // ==========================================
 
 const columnsDefinition: GridColDef[] = [
@@ -580,16 +453,20 @@ const columnsDefinition: GridColDef[] = [
     headerName: 'Status',
     width: 110,
     renderCell: (params: GridRenderCellParams) => (
-      <StatusPill status={params.value as string}>{params.value}</StatusPill>
+      <StatusPill $status={params.value as string}>{params.value}</StatusPill>
     ),
   },
 ];
 
-export default function SystemLogPage() {
+// ==========================================
+// Main Component (exported)
+// ==========================================
+
+export function SystemLogPage() {
   const [view, setView] = useState('All');
 
   // Data Grid Server-Side State
-  const [rows, setRows] = useState<any[]>([]);
+  const [rows, setRows] = useState<SystemLogRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [rowCount, setRowCount] = useState(0);
 
@@ -630,7 +507,7 @@ export default function SystemLogPage() {
   const gridColumns = columnsDefinition.map((col) => ({
     ...col,
     sortable: true,
-    renderHeader: (params: any) => (
+    renderHeader: (params: { colDef: GridColDef }) => (
       <CustomColumnHeader
         colDef={params.colDef}
         uniqueValues={UNIQUE_VALUES_MAP[col.field] || []}
@@ -689,7 +566,6 @@ export default function SystemLogPage() {
           rows={rows}
           columns={gridColumns}
           loading={loading}
-          // Server-Side Configuration
           paginationMode="server"
           rowCount={rowCount}
           paginationModel={paginationModel}
@@ -709,3 +585,5 @@ export default function SystemLogPage() {
     </PageContainer>
   );
 }
+
+export default SystemLogPage;

@@ -38,7 +38,7 @@ import {
   IconDivider,
   ActionIcon,
   SearchContainer,
-  SearchWrapper,
+  SidebarSearchWrapper,
   SearchIconRight,
   SearchInputClean,
   TreeContainer,
@@ -107,7 +107,7 @@ export const Sidebar: React.FC<SideMenuProps> = ({
 
   const SIDEBAR_STORAGE_KEY = 'sidebar-width';
   const DEFAULT_WIDTH = 280;
-  const MIN_WIDTH = 64; // icon column width — ColContent collapses to 0 at this point
+  const MIN_WIDTH = 64;
   const MAX_WIDTH = 480;
 
   const [sidebarWidth, setSidebarWidth] = useState<number>(() => {
@@ -206,8 +206,8 @@ export const Sidebar: React.FC<SideMenuProps> = ({
       id: 'systemLog',
       icon: faFileLines,
       label: 'System log',
-      href: '/monitoring/system-log',
-    }, // Active default for monitoring
+      href: '/monitoring/system-logs',
+    },
     {
       id: 'auditLog',
       icon: faFileSignature,
@@ -229,7 +229,7 @@ export const Sidebar: React.FC<SideMenuProps> = ({
   ];
 
   return (
-    <SidebarWrap width={sidebarWidth}>
+    <SidebarWrap $width={sidebarWidth}>
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         {/* Tab Buttons */}
         <ColIcons>
@@ -244,7 +244,7 @@ export const Sidebar: React.FC<SideMenuProps> = ({
             {menuItems.map((item) => (
               <IconButton
                 key={item.id}
-                active={pathname?.startsWith(item.href) && item.href !== '/'}
+                $active={pathname?.startsWith(item.href) && item.href !== '/'}
                 onClick={() => router.push(item.href)}
                 title={item.label}
                 aria-label={item.label}
@@ -348,7 +348,7 @@ export const Sidebar: React.FC<SideMenuProps> = ({
               {/* Tab Row */}
               <TabRow>
                 <TabButton
-                  active={fileTab === 'server'}
+                  $active={fileTab === 'server'}
                   onClick={() => setFileTab('server')}
                 >
                   <FontAwesomeIcon
@@ -358,7 +358,7 @@ export const Sidebar: React.FC<SideMenuProps> = ({
                   Server
                 </TabButton>
                 <TabButton
-                  active={fileTab === 'local'}
+                  $active={fileTab === 'local'}
                   onClick={() => setFileTab('local')}
                 >
                   <FontAwesomeIcon
@@ -383,7 +383,7 @@ export const Sidebar: React.FC<SideMenuProps> = ({
 
                 {/* Search Row */}
                 <SearchContainer>
-                  <SearchWrapper>
+                  <SidebarSearchWrapper>
                     <SearchInputClean
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
@@ -392,7 +392,7 @@ export const Sidebar: React.FC<SideMenuProps> = ({
                     <SearchIconRight>
                       <FontAwesomeIcon icon={faSearch} />
                     </SearchIconRight>
-                  </SearchWrapper>
+                  </SidebarSearchWrapper>
                 </SearchContainer>
 
                 {/* Tree View as Accordions */}

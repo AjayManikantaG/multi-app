@@ -1,20 +1,22 @@
-export * from './lib/molecules/table/CustomTable';
-export * from './lib/molecules/table/custom-table.styles';
-export * from './lib/molecules/form/FieldRenderer';
-export * from './lib/molecules/form/FormComponents';
-export * from './lib/organisms/form/DynamicForm';
-export * from './lib/organisms/form/dynamic-form.styles';
-export * from './lib/organisms/modals/ModuleConfigModal';
+export { Header } from './layout/header';
+export { Sidebar } from './layout/sidebar';
 
 // Atoms
-export * from './lib/atoms/Button';
-export * from './lib/atoms/TextField';
-export * from './lib/atoms/Typography';
-export * from './lib/atoms/Checkbox';
+export * from './components/atoms/Button';
+export * from './components/atoms/TextField';
+export * from './components/atoms/Typography';
+export * from './components/atoms/Checkbox';
 
 // Molecules
-export * from './lib/molecules/SearchBar';
-export * from './lib/molecules/Card';
+export * from './components/molecules/SearchBar';
+export * from './components/molecules/Card';
+export * from './components/molecules/table/CustomTable';
+export * from './components/molecules/table/custom-table.styles';
+export * from './components/molecules/form/FieldRenderer';
+export * from './components/molecules/form/FormComponents';
 
 // Organisms
-export * from './lib/organisms/TopBar';
+export * from './components/organisms/form/DynamicForm';
+export * from './components/organisms/form/dynamic-form.styles';
+export * from './components/organisms/modals/ModuleConfigModal';
+export * from './components/organisms/TopBar';

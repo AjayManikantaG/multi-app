@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 
-export const SidebarWrap = styled.div<{ width: number }>`
+export const SidebarWrap = styled.div<{
+  $width: number;
+  children?: React.ReactNode;
+}>`
   position: relative;
-  width: ${(props) => props.width}px;
+  width: ${(props) => props.$width}px;
   height: 100vh;
   display: flex;
   flex-direction: row;
@@ -25,9 +28,14 @@ export const ColIcons = styled.div`
   overflow-y: auto;
 `;
 
-export const IconButton = styled.button<{ active?: boolean }>`
-  background: ${(props) => (props.active ? '#e3f2fd' : 'transparent')};
-  color: ${(props) => (props.active ? '#1976d2' : '#555')};
+export const IconButton = styled.button<
+  {
+    $active?: boolean;
+    children?: React.ReactNode;
+  } & React.ButtonHTMLAttributes<HTMLButtonElement>
+>`
+  background: ${(props) => (props.$active ? '#e3f2fd' : 'transparent')};
+  color: ${(props) => (props.$active ? '#1976d2' : '#555')};
   border: none;
   width: 56px;
   height: 56px;
@@ -45,7 +53,7 @@ export const IconButton = styled.button<{ active?: boolean }>`
   }
 `;
 
-export const ColContent = styled.div`
+export const ColContent = styled.div<{ children?: React.ReactNode }>`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -60,29 +68,35 @@ export const TabRow = styled.div`
   background-color: #fff;
 `;
 
-export const TabButton = styled.button<{ active?: boolean }>`
+export const TabButton = styled.button<
+  {
+    $active?: boolean;
+    children?: React.ReactNode;
+  } & React.ButtonHTMLAttributes<HTMLButtonElement>
+>`
   flex: 1;
   padding: 12px 0;
   border: none;
   background: transparent;
-  color: ${(props) => (props.active ? '#1976d2' : '#666')};
-  border-bottom: 2px solid ${(props) => (props.active ? '#1976d2' : 'transparent')};
-  font-weight: ${(props) => (props.active ? 600 : 400)};
+  color: ${(props) => (props.$active ? '#1976d2' : '#666')};
+  border-bottom: 2px solid
+    ${(props) => (props.$active ? '#1976d2' : 'transparent')};
+  font-weight: ${(props) => (props.$active ? 600 : 400)};
   cursor: pointer;
-  
+
   &:hover {
     background-color: #fafafa;
   }
 `;
 
-export const ContentArea = styled.div`
+export const ContentArea = styled.div<{ children?: React.ReactNode }>`
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
 `;
 
-export const IconRow = styled.div`
+export const IconRow = styled.div<{ children?: React.ReactNode }>`
   display: flex;
   padding: 8px 16px;
   border-bottom: 1px solid #eee;
@@ -90,7 +104,11 @@ export const IconRow = styled.div`
   background: #fff;
 `;
 
-export const ActionIcon = styled.button`
+export const ActionIcon = styled.button<
+  {
+    children?: React.ReactNode;
+  } & React.ButtonHTMLAttributes<HTMLButtonElement>
+>`
   background: none;
   border: none;
   color: #555;
@@ -111,11 +129,13 @@ export const IconDivider = styled.div`
   margin: 0 8px;
 `;
 
-export const SearchContainer = styled.div`
+export const SearchContainer = styled.div<{ children?: React.ReactNode }>`
   padding: 12px 16px;
 `;
 
-export const SearchWrapper = styled.div`
+export const SidebarSearchWrapper = styled.div<{
+  children?: React.ReactNode;
+}>`
   position: relative;
   display: flex;
   background: #fff;
@@ -123,7 +143,11 @@ export const SearchWrapper = styled.div`
   border-radius: 4px;
 `;
 
-export const SearchInputClean = styled.input`
+export const SearchInputClean = styled.input<
+  {
+    children?: React.ReactNode;
+  } & React.InputHTMLAttributes<HTMLInputElement>
+>`
   flex: 1;
   border: none;
   padding: 8px 12px;
@@ -136,20 +160,24 @@ export const SearchInputClean = styled.input`
   }
 `;
 
-export const SearchIconRight = styled.div`
+export const SearchIconRight = styled.div<{ children?: React.ReactNode }>`
   padding: 8px 12px;
   color: #999;
   display: flex;
   align-items: center;
 `;
 
-export const TreeContainer = styled.div`
+export const TreeContainer = styled.div<{ children?: React.ReactNode }>`
   padding: 8px 16px;
   flex: 1;
   overflow-y: auto;
 `;
 
-export const Resizer = styled.div`
+export const Resizer = styled.div<
+  {
+    children?: React.ReactNode;
+  } & React.HTMLAttributes<HTMLDivElement>
+>`
   width: 8px;
   cursor: col-resize;
   display: flex;
@@ -163,15 +191,17 @@ export const Resizer = styled.div`
   bottom: 0;
 
   &:hover {
-    background: rgba(0,0,0,0.05);
+    background: rgba(0, 0, 0, 0.05);
   }
 `;
 
-export const ResizerHandle = styled.div`
+export const ResizerHandle = styled.div<{
+  children?: React.ReactNode;
+}>`
   display: flex;
   flex-direction: column;
   gap: 3px;
-  
+
   span {
     width: 2px;
     height: 16px;

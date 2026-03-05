@@ -19,9 +19,12 @@
     "strict": true,
     "target": "es2022",
     "paths": {
-      "@multi-app/ui": [
-        "libs/ui/src/index.ts"
-      ]
+      "@temp-workspace/core": ["libs/core/src/index.ts"],
+      "@temp-workspace/ui": ["libs/ui/src/index.ts"],
+      "@temp-workspace/shared": ["libs/shared/src/index.ts"],
+      "@temp-workspace/entities": ["libs/entities/src/index.ts"],
+      "@temp-workspace/infrastructure": ["libs/infrastructure/src/index.ts"],
+      "@temp-workspace/features": ["libs/features/src/index.ts"]
     },
     "customConditions": [
       "@temp-workspace/source"
